@@ -6,7 +6,6 @@ import { ExpandLess, ExpandMore } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme: Theme) => ({
     SideDiv: {
-        backgroundColor: "red",
         maxWidth: "fit-content",
         minWidth: "15rem",
         padding: "1rem",
@@ -24,7 +23,7 @@ const categoryList: { name: string }[] = [
     { name: "Inst" },
 ];
 
-const Sidebar = () => {
+const DesktopSidebar = () => {
     const classes = useStyles();
     const history = useHistory();
     const [open, setopen] = useState(true);
@@ -37,11 +36,7 @@ const Sidebar = () => {
     return (
         <div className={classes.SideDiv}>
             <List>
-                <ListItem
-                    selected
-                    button
-                    onClick={() => history.push("/dashboard")}
-                >
+                <ListItem selected button onClick={() => history.push("/")}>
                     DashBoard
                 </ListItem>
                 <ListItem
@@ -73,4 +68,4 @@ const Sidebar = () => {
     );
 };
 
-export default Sidebar;
+export default DesktopSidebar;

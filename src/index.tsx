@@ -2,13 +2,15 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
-import { BrowserRouter, Route } from "react-router-dom";
+import { StylesProvider } from "@material-ui/core/styles";
+
+//redux will also be wrapper here
 
 ReactDOM.render(
     <React.StrictMode>
-        <BrowserRouter>
-            <Route path='/' component={App} />
-        </BrowserRouter>
+        <StylesProvider injectFirst>
+            <App />
+        </StylesProvider>
     </React.StrictMode>,
     document.getElementById("root")
 );

@@ -1,12 +1,14 @@
 import React from "react";
-import Layout from "./admin/Layout/Layout";
-import { StylesProvider } from "@material-ui/core/styles";
+import Admin from "./admin";
+
+import { BrowserRouter, Route } from "react-router-dom";
 
 const App = () => {
     return (
-        <StylesProvider injectFirst>
-            <Layout></Layout>
-        </StylesProvider>
+      
+            <BrowserRouter>
+                <Route path='/admin' component={Admin} />
+            </BrowserRouter>
     );
 };
 
