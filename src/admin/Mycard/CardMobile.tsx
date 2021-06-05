@@ -10,6 +10,7 @@ import {
     CardHeader,
     CardMedia,
     Typography,
+    CardActions,
 } from "@material-ui/core";
 import TextTruncate from "react-text-truncate";
 
@@ -19,6 +20,7 @@ const useStyles = makeStyles(() => ({
     },
     card: {
         maxWidth: "400px",
+        height : "260px",
         display: "flex",
     },
 }));
@@ -33,12 +35,13 @@ const CardMobile = () => {
         <Card className={classes.card}>
             <Box style={{ width: "60%" }}>
                 <CardHeader
+                    subheader='INTERNSHIP'
+                   
                     title='Placement'
-                    subheader='internship'
-                    style={{ padding: "0.8rem" }}
+                    style={{ padding: "1.2rem" }}
                 />
                 <CardContent
-                    style={{ padding: "0.8rem", paddingRight: "0.5rem" }}
+                    style={{ padding: "1.2rem", paddingRight: "0.5rem" }}
                 >
                     <TextTruncate
                         line={3}
@@ -48,13 +51,15 @@ const CardMobile = () => {
                             <a href='save-post'>Read more</a>
                         }
                     />
-                    <Button>EDIT</Button>
-                    <Button>Delete</Button>
+                    <CardActions>
+                    <Button size="small" color="primary">EDIT</Button>
+                    <Button size="small" color="primary">Delete</Button>
+                    </CardActions>
                 </CardContent>
             </Box>
             <Box
                 style={{
-                    width: "40%",
+                    width: "35%",
                     alignContent: "space-around",
                 }}
                 alignContent='space-around'
@@ -63,15 +68,16 @@ const CardMobile = () => {
                     component='img'
                     src={test}
                     style={{
-                        width: "90%",
+                        width: "100%",
                         margin: "1rem auto",
+                        aspectRatio : "4 / 3",
                     }}
                 />
                 <Typography component='h5' align='center'>
-                    DATE
-                </Typography>
-                <Typography component='h5' align='center'>
-                    Author
+                    DATE | Author
+                {/* </Typography>          
+                <Typography component='h5' align='center' > */}
+                    {/* Author */}
                 </Typography>
             </Box>
         </Card>
