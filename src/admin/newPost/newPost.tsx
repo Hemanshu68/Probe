@@ -10,9 +10,10 @@ import {
 } from "@material-ui/core";
 import React, { useState } from "react";
 import { Formik } from "formik";
-
-import test from "../../assets/test.jpg";
 import RichEditor from "../Editor/RichEditor";
+import Thumbnail from "./Thumbnail";
+import { CategoryOptions } from "./CategoryOptions";
+import { useHistory } from "react-router";
 
 const useStyles = makeStyles((theme: Theme) => ({
     outergrid: {
@@ -24,49 +25,60 @@ const useStyles = makeStyles((theme: Theme) => ({
             display: "flex",
             flexDirection: "column",
         },
+        "& * :not(svg)": {
+            margin: "1.2rem 0",
+        },
     },
     innergrid: {
         display: "grid",
-        gridTemplateColumns: "repeat(1,1fr 1fr)",
-        padding: "0.2rem 0.5rem",
+        gridTemplateColumns: "1fr 2fr",
         alignItems: "center",
-        justifyContent: "space-around",
     },
     imgg: {
         padding: "0.2rem 0.5rem",
-        textAlign: "center",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "flex-end",
     },
     img: {
-        maxHeight: "250px",
+        maxHeight: "180px",
         margin: "0 auto",
+    },
+    btn: {
+        backgroundColor: "#fab856",
+        margin: "10px",
+        minWidth: "100px",
     },
 }));
 
+interface InitalValues {
+    title: string;
+    category: string;
+    fn: File | null;
+    editor: string;
+}
+
 const NewPost: React.FC = () => {
-    const selectValues = ["cultural", "insti", "internship"];
     const classes = useStyles();
-    const [imgpath, setimgpath] = useState("");
+    const history = useHistory();
+    const [imgpath, setimgpath] = useState<string | null>(null);
+
+    const initialValues: InitalValues = {
+        title: "",
+        category: "",
+        fn: null,
+        editor: "",
+    };
     return (
         <Box>
             <Typography variant='h4'>Add New Post</Typography>
             <Formik
-                initialValues={{
-                    fname: "",
-                    selectValue: "",
-                    fn: null,
-                    editor: "",
-                }}
+                initialValues={initialValues}
                 onSubmit={(data) => {
                     console.log(data);
                 }}
             >
-                {({
-                    values,
-                    handleBlur,
-                    handleChange,
-                    handleSubmit,
-                    setFieldValue,
-                }) => (
+                {({ values, handleBlur, handleChange, handleSubmit }) => (
                     <form
                         onSubmit={handleSubmit}
                         style={{ backgroundColor: "#FFFFFF", margin: "15px 0" }}
@@ -82,10 +94,11 @@ const NewPost: React.FC = () => {
                                 </Typography>
                                 <TextField
                                     variant='outlined'
-                                    name='fname'
-                                    value={values.fname}
+                                    name='title'
+                                    value={values.title}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
+                                    style={{ maxWidth: "270px" }}
                                 />
                                 <Typography
                                     style={{
@@ -95,51 +108,51 @@ const NewPost: React.FC = () => {
                                     Category
                                 </Typography>
                                 <Select
-                                    name='selectValue'
-                                    labelId='demo-simple-select-filled-label'
-                                    id='demo-simple-select-filled'
-                                    value={values.selectValue}
+                                    variant='outlined'
+                                    name='category'
+                                    labelId='category-select'
+                                    id='category-selector'
+                                    value={values.category}
                                     onChange={handleChange}
-                                    style={{ minWidth: "200px" }}
+                                    style={{ width: "250px" }}
                                 >
-                                    {selectValues.map((val, idx) => {
+                                    {CategoryOptions.map((category, idx) => {
                                         return (
-                                            <MenuItem value={val} key={idx}>
-                                                {val}
+                                            <MenuItem
+                                                value={category}
+                                                key={idx}
+                                            >
+                                                {category}
                                             </MenuItem>
                                         );
                                     })}
                                 </Select>
                             </Box>
                             <Box className={classes.imgg}>
-                                <Typography variant='h5'>
+                                <Typography variant='h5' align='center'>
                                     Thumbnail Image
                                 </Typography>
-                                <Box
-                                    style={{
-                                        width: "100%",
-                                    }}
-                                >
-                                    <img
-                                        src={!imgpath ? test : "default image"}
-                                        className={classes.img}
-                                        alt={"selected img"}
-                                    />
-                                </Box>
+                                <Thumbnail
+                                    name='fn'
+                                    setinput={setimgpath}
+                                    imgpath={imgpath}
+                                />
                             </Box>
                         </Box>
-                        <RichEditor />
+                        <RichEditor name='editor' />
                         <Box
                             style={{ width: "100%", textAlign: "center" }}
                             flex
                         >
-                            <Button style={{ margin: "10px auto" }}>
+                            <Button
+                                className={classes.btn}
+                                onClick={() => {
+                                    history.push("/modal/jdnjnfjn");
+                                }}
+                            >
                                 view
                             </Button>
-                            <Button
-                                type='submit'
-                                style={{ margin: "10px auto" }}
-                            >
+                            <Button type='submit' className={classes.btn}>
                                 Submit
                             </Button>
                         </Box>

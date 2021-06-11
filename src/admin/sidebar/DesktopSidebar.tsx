@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import { List, ListItem, Collapse, ListItemText } from "@material-ui/core";
-import { useHistory } from "react-router-dom";
+import { useHistory, useRouteMatch } from "react-router-dom";
 import { ExpandLess, ExpandMore } from "@material-ui/icons";
+import { sidebarItems } from "./sidebaritems";
 
 const useStyles = makeStyles((theme: Theme) => ({
     SideDiv: {
@@ -17,52 +18,50 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 }));
 
-const categoryList: { name: string }[] = [
-    { name: "Cultural" },
-    { name: "Technical" },
-    { name: "Inst" },
-];
-
 const DesktopSidebar = () => {
+    let { url } = useRouteMatch();
     const classes = useStyles();
     const history = useHistory();
     const [open, setopen] = useState(true);
 
     //here we need to return mouse event as onclick requires mouseevent
     const handleClick = (e: string) => (event: any) => {
-        history.push(`/${e.toLowerCase()}`);
+        history.push(url + e);
     };
 
     return (
         <div className={classes.SideDiv}>
             <List>
-                <ListItem selected button onClick={() => history.push("/")}>
-                    DashBoard
-                </ListItem>
-                <ListItem
-                    button
-                    onClick={() => history.push("/all-post-this-month")}
-                >
-                    All Post This Month
-                </ListItem>
-                <ListItem button onClick={() => setopen(!open)}>
-                    <ListItemText primary='Posts by Category' />
-                    {open ? <ExpandLess /> : <ExpandMore />}
-                </ListItem>
-                <Collapse in={open} timeout='auto' unmountOnExit>
-                    <List component='div' disablePadding>
-                        {categoryList.map(({ name }, idx) => (
-                            <ListItem
-                                button
-                                className={classes.nested}
-                                onClick={handleClick(name)}
-                                key={idx}
-                            >
+                {sidebarItems.map(({ name, path, children }, idx) => {
+                    return !!children ? (
+                        <>
+                            <ListItem button onClick={() => setopen(!open)}>
+                                <ListItemText primary='Posts by Category' />
+                                {open ? <ExpandLess /> : <ExpandMore />}
+                            </ListItem>
+                            <Collapse in={open} timeout='auto' unmountOnExit>
+                                <List component='div' disablePadding>
+                                    {children.map(({ subname, path }, idx) => (
+                                        <ListItem
+                                            button
+                                            className={classes.nested}
+                                            onClick={handleClick(path)}
+                                            key={idx}
+                                        >
+                                            {subname}
+                                        </ListItem>
+                                    ))}
+                                </List>
+                            </Collapse>
+                        </>
+                    ) : (
+                        !!path && (
+                            <ListItem button onClick={handleClick(path)}>
                                 {name}
                             </ListItem>
-                        ))}
-                    </List>
-                </Collapse>
+                        )
+                    );
+                })}
             </List>
         </div>
     );

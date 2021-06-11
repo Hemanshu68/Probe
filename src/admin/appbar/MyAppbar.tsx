@@ -11,6 +11,8 @@ import {
 } from "@material-ui/core";
 import logo from "../../assets/probe.png";
 import { Menu as Ham } from "@material-ui/icons";
+import { useDispatch } from "react-redux";
+import { TOGGLE_SIDEBAR } from "../../redux/actions/sidebaraction";
 
 const useStyles = makeStyles((theme: Theme) => ({
     toolbar: {
@@ -40,12 +42,15 @@ const MyAppBar = () => {
     const classes = useStyles();
     const theme = useTheme();
     const media = useMediaQuery(theme.breakpoints.down("md"));
+    const dispatch = useDispatch();
     return (
         <AppBar position='static'>
             <Toolbar className={classes.toolbar}>
                 <Box className={classes.mobile}>
                     {media && (
-                        <IconButton>
+                        <IconButton
+                            onClick={() => dispatch({ type: TOGGLE_SIDEBAR })}
+                        >
                             <Ham />
                         </IconButton>
                     )}

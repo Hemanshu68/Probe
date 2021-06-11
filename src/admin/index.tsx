@@ -49,7 +49,12 @@ const Admin = () => {
                 {!media ? <Sidebar /> : <MobileSidebar />}
                 <Box className={classes.mainContent}>
                     <Switch>
-                        <Route exact path='/admin' component={Dashboard} />
+                        <Route
+                            exact
+                            path='/admin/dashboard'
+                            component={Dashboard}
+                        />
+
                         <Route
                             exact
                             path='/admin/card'

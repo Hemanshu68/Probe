@@ -7,8 +7,12 @@ import {
     ListItemText,
     SwipeableDrawer,
 } from "@material-ui/core";
-import { useHistory } from "react-router-dom";
+import { useHistory, useRouteMatch } from "react-router-dom";
 import { ExpandLess, ExpandMore } from "@material-ui/icons";
+import { useDispatch, useSelector } from "react-redux";
+import { SIDEBAR_OPEN } from "../../redux/types";
+import { TOGGLE_SIDEBAR } from "../../redux/actions/sidebaraction";
+import { sidebarItems } from "./sidebaritems";
 
 const useStyles = makeStyles((theme: Theme) => ({
     list: {
@@ -19,19 +23,16 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 }));
 
-const categoryList: { name: string }[] = [
-    { name: "Cultural" },
-    { name: "Technical" },
-    { name: "Inst" },
-];
-
 const MobileSidebar = () => {
-    const classes = useStyles();
-    const [open, setopen] = useState(true);
-    const history = useHistory();
+    let { path, url } = useRouteMatch();
 
+    const opened = useSelector((state: SIDEBAR_OPEN) => state);
+    const classes = useStyles();
+    const history = useHistory();
+    const dispatch = useDispatch();
+    const [open, setopen] = useState(true);
     const toggleDrawer =
-        (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
+        () => (event: React.KeyboardEvent | React.MouseEvent) => {
             if (
                 event &&
                 event.type === "keydown" &&
@@ -41,53 +42,60 @@ const MobileSidebar = () => {
                 return;
             }
 
-            setopen(open);
+            dispatch({ type: TOGGLE_SIDEBAR });
         };
     //here we need to return mouse event as onclick requires mouseevent
     const handleClick = (e: string) => (event: any) => {
-        history.push(`/${e.toLowerCase()}`);
+        dispatch({ type: TOGGLE_SIDEBAR });
+        if (path !== e) {
+            history.push(url + e);
+        }
     };
     return (
         <SwipeableDrawer
             anchor={"left"}
-            open={open}
-            onClose={toggleDrawer(false)}
-            onOpen={toggleDrawer(true)}
+            open={opened}
+            onClose={toggleDrawer()}
+            onOpen={toggleDrawer()}
         >
-            <div
-                className={classes.list}
-                role='presentation'
-                onClick={toggleDrawer(false)}
-                onKeyDown={toggleDrawer(false)}
-            >
+            <div className={classes.list} role='presentation'>
                 <List>
-                    <ListItem selected button onClick={() => history.push("/")}>
-                        DashBoard
-                    </ListItem>
-                    <ListItem
-                        button
-                        onClick={() => history.push("/all-post-this-month")}
-                    >
-                        All Post This Month
-                    </ListItem>
-                    <ListItem button onClick={() => setopen(!open)}>
-                        <ListItemText primary='Posts by Category' />
-                        {open ? <ExpandLess /> : <ExpandMore />}
-                    </ListItem>
-                    <Collapse in={open} timeout='auto' unmountOnExit>
-                        <List component='div' disablePadding>
-                            {categoryList.map(({ name }, idx) => (
-                                <ListItem
-                                    button
-                                    className={classes.nested}
-                                    onClick={handleClick(name)}
-                                    key={idx}
+                    {sidebarItems.map(({ name, path, children }, idx) => {
+                        return !!children ? (
+                            <>
+                                <ListItem button onClick={() => setopen(!open)}>
+                                    <ListItemText primary='Posts by Category' />
+                                    {open ? <ExpandLess /> : <ExpandMore />}
+                                </ListItem>
+                                <Collapse
+                                    in={open}
+                                    timeout='auto'
+                                    unmountOnExit
                                 >
+                                    <List component='div' disablePadding>
+                                        {children.map(
+                                            ({ subname, path }, idx) => (
+                                                <ListItem
+                                                    button
+                                                    className={classes.nested}
+                                                    onClick={handleClick(path)}
+                                                    key={idx}
+                                                >
+                                                    {subname}
+                                                </ListItem>
+                                            )
+                                        )}
+                                    </List>
+                                </Collapse>
+                            </>
+                        ) : (
+                            !!path && (
+                                <ListItem button onClick={handleClick(path)}>
                                     {name}
                                 </ListItem>
-                            ))}
-                        </List>
-                    </Collapse>
+                            )
+                        );
+                    })}
                 </List>
             </div>
         </SwipeableDrawer>
