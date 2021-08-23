@@ -33,6 +33,7 @@ const Thumbnail = ({ setinput, imgpath, name }: any) => {
                     opacity: "0",
                 }}
                 type='file'
+                accept='image/*'
                 onChange={(e: ChangeEvent<HTMLInputElement>) => {
                     const file: FileList | null = e.target.files;
                     if (file?.length !== 0) {

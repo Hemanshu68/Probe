@@ -13,8 +13,8 @@ import TextTruncate from "react-text-truncate";
 
 const useStyles = makeStyles((theme: Theme) => ({
     media: {
-        height: 0,
-        paddingTop: "56.25%", // 16:9
+        maxWidth: "100%",
+        // paddingTop: "56.25%", // 16:9
     },
     cardhref: {
         "&:visited": {
@@ -29,7 +29,7 @@ const text =
 const CardDektop = () => {
     const classes = useStyles();
     return (
-        <Card style={{ maxWidth: "400px", padding: "10px " }}>
+        <Card style={{ maxWidth: "380px", padding: "10px " }}>
             <CardHeader
                 title='Placement'
                 subheader={
@@ -44,7 +44,12 @@ const CardDektop = () => {
                     </Box>
                 }
             />
-            <CardMedia className={classes.media} image={test} title='test' />
+            <CardMedia
+                component='img'
+                className={classes.media}
+                image={test}
+                title='test'
+            />
 
             <CardContent>
                 <Box

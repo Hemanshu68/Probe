@@ -8,11 +8,11 @@ import {
     SwipeableDrawer,
 } from "@material-ui/core";
 import { useHistory, useRouteMatch } from "react-router-dom";
-import { ExpandLess, ExpandMore } from "@material-ui/icons";
+import { AddBox, ExpandLess, ExpandMore } from "@material-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
-import { SIDEBAR_OPEN } from "../../redux/types";
-import { TOGGLE_SIDEBAR } from "../../redux/actions/sidebaraction";
 import { sidebarItems } from "./sidebaritems";
+import { Sidebar } from "../../redux/types/Sidebar";
+import { State } from "../../redux/reducers";
 
 const useStyles = makeStyles((theme: Theme) => ({
     list: {
@@ -21,12 +21,19 @@ const useStyles = makeStyles((theme: Theme) => ({
     nested: {
         paddingLeft: theme.spacing(6),
     },
+    addicon: {
+        color: theme.palette.primary.main,
+        verticalAlign: "middle",
+        display: "inline-flex",
+        marginLeft: "0.3rem",
+        fontSize: "1.3rem",
+    },
 }));
 
 const MobileSidebar = () => {
     let { path, url } = useRouteMatch();
 
-    const opened = useSelector((state: SIDEBAR_OPEN) => state);
+    const opened = useSelector((state: State) => state).sidebar;
     const classes = useStyles();
     const history = useHistory();
     const dispatch = useDispatch();
@@ -42,11 +49,11 @@ const MobileSidebar = () => {
                 return;
             }
 
-            dispatch({ type: TOGGLE_SIDEBAR });
+            dispatch({ type: opened ? Sidebar.HIDE : Sidebar.SHOW });
         };
     //here we need to return mouse event as onclick requires mouseevent
     const handleClick = (e: string) => (event: any) => {
-        dispatch({ type: TOGGLE_SIDEBAR });
+        dispatch({ type: Sidebar.HIDE });
         if (path !== e) {
             history.push(url + e);
         }
@@ -92,6 +99,9 @@ const MobileSidebar = () => {
                             !!path && (
                                 <ListItem button onClick={handleClick(path)}>
                                     {name}
+                                    {name === "New Post" ? (
+                                        <AddBox className={classes.addicon} />
+                                    ) : null}
                                 </ListItem>
                             )
                         );

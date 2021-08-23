@@ -4,15 +4,12 @@ import Axios from "axios";
 
 import { Editor as TinyMCEEditor } from "tinymce";
 import { useField } from "formik";
+import { Cloudinary_URL, upload_preset } from "../../Constants/constants";
+import { Typography } from "@material-ui/core";
 
 interface EditorFieldProps extends IAllProps {
     name: string;
 }
-
-const cloudName = "alphatest68";
-const Cloudinary_URL = `https://api.cloudinary.com/v1_1/${cloudName}/upload`;
-
-const upload_preset = "cdtvqkhy";
 
 const RichEditor = ({ name, ...otherProps }: EditorFieldProps) => {
     const [field, meta] = useField(name);
@@ -98,7 +95,9 @@ const RichEditor = ({ name, ...otherProps }: EditorFieldProps) => {
                 }}
             />
             {meta.touched && meta.error ? (
-                <div className='error'>{meta.error}</div>
+                <Typography variant='caption' color='error' component='h6'>
+                    {meta.error}
+                </Typography>
             ) : null}
         </div>
     );

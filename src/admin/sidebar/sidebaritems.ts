@@ -12,52 +12,52 @@ const sidebarItems = [
         children: [
             {
                 subname: "Cultural",
-                path: "/cultural",
+                path: "/category/cultural",
             },
             {
                 subname: "Technical",
-                path: "/technical",
+                path: "/category/technical",
             },
             {
                 subname: "Inst",
-                path: "/insti",
+                path: "/category/insti",
             },
             {
                 subname: "Editorials",
-                path: "/editorial",
+                path: "/category/editorial",
             },
             {
                 subname: "Hostel",
-                path: "/hostel",
+                path: "/category/hostel",
             },
             {
                 subname: "Gowing Minds",
-                path: "/growing-minds",
+                path: "/category/growing-minds",
             },
 
             {
                 subname: "Futuristic",
-                path: "/futuristic",
+                path: "/category/futuristic",
             },
             {
                 subname: "Crackerjack",
-                path: "/crackerjack",
+                path: "/category/crackerjack",
             },
             {
                 subname: "Lesiure",
-                path: "/lesiure",
+                path: "/category/lesiure",
             },
             {
                 subname: "Inst",
-                path: "/insti",
+                path: "/category/insti",
             },
             {
                 subname: "Comical",
-                path: "/comical",
+                path: "/category/comical",
             },
             {
                 subname: "Newsletter",
-                path: "/newsletter",
+                path: "/category/newsletter",
             },
         ],
     },

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import { List, ListItem, Collapse, ListItemText } from "@material-ui/core";
 import { useHistory, useRouteMatch } from "react-router-dom";
-import { ExpandLess, ExpandMore } from "@material-ui/icons";
+import { AddBox, ExpandLess, ExpandMore } from "@material-ui/icons";
 import { sidebarItems } from "./sidebaritems";
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -15,6 +15,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     nested: {
         paddingLeft: theme.spacing(6),
+    },
+    addicon: {
+        color: theme.palette.primary.main,
+        verticalAlign: "middle",
+        display: "inline-flex",
+        marginLeft: "0.3rem",
+        fontSize: "1.3rem",
     },
 }));
 
@@ -35,7 +42,11 @@ const DesktopSidebar = () => {
                 {sidebarItems.map(({ name, path, children }, idx) => {
                     return !!children ? (
                         <>
-                            <ListItem button onClick={() => setopen(!open)}>
+                            <ListItem
+                                button
+                                onClick={() => setopen(!open)}
+                                key={idx}
+                            >
                                 <ListItemText primary='Posts by Category' />
                                 {open ? <ExpandLess /> : <ExpandMore />}
                             </ListItem>
@@ -56,8 +67,15 @@ const DesktopSidebar = () => {
                         </>
                     ) : (
                         !!path && (
-                            <ListItem button onClick={handleClick(path)}>
+                            <ListItem
+                                button
+                                onClick={handleClick(path)}
+                                key={idx}
+                            >
                                 {name}
+                                {name === "New Post" ? (
+                                    <AddBox className={classes.addicon} />
+                                ) : null}
                             </ListItem>
                         )
                     );

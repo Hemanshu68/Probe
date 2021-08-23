@@ -1,13 +1,15 @@
-import { SIDEBAR_OPEN } from "../types";
-import { ToggleSidebarAction, TOGGLE_SIDEBAR } from "../actions/sidebaraction";
+import { Sidebar } from "../types/Sidebar";
 
-const sideBarReducer = (
-    state: SIDEBAR_OPEN = false,
-    action: ToggleSidebarAction
-) => {
+interface SidebarAction {
+    type: string;
+}
+
+const sideBarReducer = (state: boolean = false, action: SidebarAction) => {
     switch (action.type) {
-        case TOGGLE_SIDEBAR:
-            return !state;
+        case Sidebar.SHOW:
+            return true;
+        case Sidebar.HIDE:
+            return false;
         default:
             return state;
     }

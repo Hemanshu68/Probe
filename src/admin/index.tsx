@@ -8,14 +8,16 @@ import { Route, Switch } from "react-router-dom";
 import NewPost from "./newPost/newPost";
 import CardDektop from "./Mycard/CardDesktop";
 import Dashboard from "./dashboard/darshboard";
-import CardMobile from "./Mycard/CardMobile";
+import MyAdminCard from "./Mycard/MyAdminCard";
+import CategoryPosts from "./CategoryPosts/CategoryPosts";
 
 const useStyles = makeStyles((theme: Theme) => ({
     box: {
+        backgroundColor: "#f2f2f2",
         display: "flex",
         flexDirection: "column",
         marginBottom: "0",
-        height: "100vh",
+        minHeight: "100vh",
         width: "100%",
     },
     innerBox: {
@@ -54,7 +56,10 @@ const Admin = () => {
                             path='/admin/dashboard'
                             component={Dashboard}
                         />
-
+                        <Route
+                            path='/admin/category/:category'
+                            component={CategoryPosts}
+                        />
                         <Route
                             exact
                             path='/admin/card'
@@ -63,11 +68,16 @@ const Admin = () => {
                         <Route
                             exact
                             path='/admin/cardm'
-                            component={CardMobile}
+                            component={MyAdminCard}
                         />
                         <Route
                             exact
                             path='/admin/newpost'
+                            component={NewPost}
+                        />
+                        <Route
+                            exact
+                            path='/admin/edit/:id'
                             component={NewPost}
                         />
                     </Switch>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles, Theme, useTheme } from "@material-ui/core/styles";
 import {
     AppBar,
@@ -6,13 +6,16 @@ import {
     Box,
     IconButton,
     Toolbar,
-    Typography,
+    Button,
     useMediaQuery,
+    MenuItem,
+    Menu,
+    PopoverOrigin,
 } from "@material-ui/core";
 import logo from "../../assets/probe.png";
 import { Menu as Ham } from "@material-ui/icons";
 import { useDispatch } from "react-redux";
-import { TOGGLE_SIDEBAR } from "../../redux/actions/sidebaraction";
+import { Sidebar } from "../../redux/types/Sidebar";
 
 const useStyles = makeStyles((theme: Theme) => ({
     toolbar: {
@@ -27,10 +30,9 @@ const useStyles = makeStyles((theme: Theme) => ({
             padding: "0",
         },
     },
-    avbtn: {
-        display: "flex",
-        justifyContent: "space-around",
-        alignItems: "center",
+    avatar: {
+        width: theme.spacing(4),
+        height: theme.spacing(4),
     },
     mobile: {
         display: "flex",
@@ -38,18 +40,31 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 }));
 
+const AnchorOrigin: PopoverOrigin = {
+    vertical: "bottom",
+    horizontal: "right",
+};
+
+const TransformOrigin: PopoverOrigin = {
+    vertical: "top",
+    horizontal: "right",
+};
+
 const MyAppBar = () => {
+    const [anchorEl, setAnchorEl] = useState(null);
+    const openMenu = Boolean(anchorEl);
     const classes = useStyles();
     const theme = useTheme();
     const media = useMediaQuery(theme.breakpoints.down("md"));
     const dispatch = useDispatch();
+
     return (
-        <AppBar position='static'>
+        <AppBar position='static' elevation={0}>
             <Toolbar className={classes.toolbar}>
                 <Box className={classes.mobile}>
                     {media && (
                         <IconButton
-                            onClick={() => dispatch({ type: TOGGLE_SIDEBAR })}
+                            onClick={() => dispatch({ type: Sidebar.SHOW })}
                         >
                             <Ham />
                         </IconButton>
@@ -57,11 +72,27 @@ const MyAppBar = () => {
                     {/* change the logo with media */}
                     <img src={logo} alt='probe' style={{ height: "2.8rem" }} />
                 </Box>
-                <Box className={classes.avbtn}>
-                    <Typography variant='h5'>User</Typography>
-                    <IconButton>
-                        <Avatar alt={"user"} />
-                    </IconButton>
+                <Box>
+                    <Button
+                        startIcon={<Avatar className={classes.avatar} />}
+                        onClick={(event: any) =>
+                            setAnchorEl(event.currentTarget)
+                        }
+                    >
+                        User
+                    </Button>
+                    <Menu
+                        id='menu-appbar'
+                        disableScrollLock
+                        anchorEl={anchorEl}
+                        anchorOrigin={AnchorOrigin}
+                        transformOrigin={TransformOrigin}
+                        getContentAnchorEl={null}
+                        open={openMenu}
+                        onClose={() => setAnchorEl(null)}
+                    >
+                        <MenuItem>Logout</MenuItem>
+                    </Menu>
                 </Box>
             </Toolbar>
         </AppBar>
